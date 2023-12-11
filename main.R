@@ -16,8 +16,6 @@ anova(model6)
 mod_anova_6 <- aov(streams ~ in_spotify_playlists * in_apple_playlists + in_apple_playlists * in_deezer_playlists + in_spotify_playlists * in_deezer_playlists + in_spotify_playlists * in_deezer_playlists * in_apple_playlists, data = spotify_data)
 summary(mod_anova_6)
 
-TukeyHSD(mod_anova_6)
-
 plot(model6, which = 1:6)
 
 plot(studres(model6)~c(1:829),
@@ -46,8 +44,6 @@ anova(model6_1)
 mod_anova_6_1 <- aov(streams ~ in_spotify_playlists * in_apple_playlists + in_apple_playlists * in_deezer_playlists + in_spotify_playlists * in_deezer_playlists + in_spotify_playlists * in_deezer_playlists * in_apple_playlists, data = spotify_data_bez_hodnot_model6)
 summary(mod_anova_6_1)
 
-TukeyHSD(mod_anova_6_1)
-
 plot(model6_1, which = 1:6)
 
 plot(studres(model6_1)~c(1:825),
@@ -61,4 +57,99 @@ abline(h = -qt(1-0.05/(2 * 825), df=817), col="red")
 
 
 
+
+model8 <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists + in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists,  data = spotify_data)
+summary(model8) #0.69#
+anova(model8)
+
+plot(studres(model8)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="gray", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=815), col="red")
+abline(h = -qt(1-0.05/(2 * 829), df=815), col="red")
+
+indices <- c(527, 528, 42, 721, 555, 136)
+
+abline(v=indices, lty=2)
+points(indices, studres(model6)[indices], pch = 16, col = 'darkblue')
+
+
+
+
+
+
+
+model9 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data)
+summary(model9)#0.6963#
+anova(model9)
+AIC(model9)#34100
+BIC(model9)#34161
+
+
+plot(model9, which = 1:6)
+plot(studres(model9)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="gray", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=817), col="red")
+abline(h = -qt(1-0.05/(2 * 829), df=817), col="red")
+
+indices <- c(527, 528, 42, 37, 136, 721)
+
+abline(v=indices, lty=2)
+points(indices, studres(model9)[indices], pch = 16, col = 'darkblue')
+
+# vyhození hodnot
+spotify_data_bez_hodnot_model9 <- spotify_data[c(-527, -42, -528, -721),]
+model9_1 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot_model9)
+summary(model9_1)#0.7233
+anova(model9_1)
+AIC(model9_1)#33806.12
+BIC(model9_1)#33867.42
+
+plot(model9_1, which = 1:6)
+plot(studres(model9_1)~c(1:825),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="gray", lwd=2)
+abline(h = qt(1-0.05/(2 * 825), df=813), col="red")
+abline(h = -qt(1-0.05/(2 * 825), df=813), col="red")
+indices <- c(125, 107, 145, 38, 37)
+
+abline(v=indices, lty=2)
+points(indices, studres(model9_1)[indices], pch = 16, col = 'darkblue')
+
+
+
+
+
+
+
+
+
+
+model11 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data)
+summary(model11)#0.6956
+anova(model11)
+AIC(model11)#34097
+BIC(model11)#34149.11
+
+plot(model11, which = 1:6)
+plot(studres(model11)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="gray", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=819), col="red")
+abline(h = -qt(1-0.05/(2 * 829), df=819), col="red")
+
+indices <- c(527, 528, 42, 37, 136, 721)
+
+abline(v=indices, lty=2)
+points(indices, studres(model11)[indices], pch = 16, col = 'darkblue')
+
+
+# vyhození data
+spotify_data_bez_hodnot_model11 <- spotify_data[c(-527, -42, -528, -721),]
+model11_1 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot_model11)
+summary(model11_1)#0.7221
+anova(model11_1)
+AIC(model11_1)#33807.87
+BIC(model11_1)#33859.74
 
