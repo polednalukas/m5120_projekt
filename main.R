@@ -117,8 +117,14 @@ indices <- c(125, 107, 145, 38, 37)
 abline(v=indices, lty=2)
 points(indices, studres(model9_1)[indices], pch = 16, col = 'darkblue')
 
+spotify_data_bez_hodnot2_model9 <- spotify_data_bez_hodnot_model9[c(-125, -145),]
+model9_2 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot2_model9)
+summary(model9_2)#0.7324
+anova(model9_2)
+AIC(model9_2)#33687.87
+BIC(model9_2)#33749.14
 
-
+plot(model9_2, which = 1:6)
 
 
 
