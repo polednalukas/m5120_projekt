@@ -4,30 +4,127 @@ author: Lucia Kajanová, Lukáš Poledňa, Tereza Slaninová, Kateřina Válkov�
 date: 12. 12. 2023
 output: ioslides_presentation
 ---
+```{r setup, include=FALSE}
+library(ggplot2)
+library(MASS)
+library(dplyr)
+library(writexl)
+library(tidyverse)
+library(hrbrthemes)
+library(ggpubr)
+library(readxl)
+library(cowplot)
+library(vctrs)
+library(psych)
+```
 
-# First section
+# Introduction
 
-## First slide
+## DATA
+* Most Streamed Spotify Songs 2023
+* Kaggle — Nidula Elgiriyewithana
+* numeric variable  — streams
 
-The [R plugin](https://www.jetbrains.com/help/pycharm/r-plugin-support.html) for IntelliJ-based IDEs provides
-handy capabilities to work with the [R Markdown](https://www.jetbrains.com/help/pycharm/r-markdown.html) files.
-To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) a new R chunk,
-position the caret at any line or the code chunk, then click "+".
 
-## Second slide
+## DESCRIPTION OF VARIABLES
 
-Type any R code in the chunk and check the result:
+* PLAYLISTS – appearance of songs in different platforms’ playlists
+* CHARTS – appearance of songs in different platforms’ charts
+* MUSICAL ATTRIBUTES – beats per minute, key and mode of the song
+* ARTIST INFORMATION – name of artist(s), number of artists contributing to songs
+* SONG INFORMATION – track name, day, month and year of release
+* OTHERS – danceability, acousticness, liveness, ...
+
+
+## SUMMARY
+```{r, include = FALSE}
+spotify.2023_finalni_uprava <- read_excel("D:/OneDrive - MUNI/5. semestr/M5120/projekt/5120_projekt/spotify.2023_finalni_uprava.xlsx")
+spotify_data <- spotify.2023_finalni_uprava
+```
+```{r}
+summary(spotify_data[,1:8])
+```
+##
+```{r}
+summary(spotify_data[,9:16])
+```
+
+##
+```{r}
+summary(spotify_data[,17:24])
+```
+
+##
+```{r, echo = FALSE}
+p <- ggplot(spotify_data, aes(x = streams))
+p <- p + geom_histogram(binwidth = 100000000, fill = "#1DB954", color = "#008222", alpha = 1000)
+p <- p + xlab("Streams")
+p <- p + ylab("Number of songs")
+p <- p + theme(plot.title = element_text(size = 15))
+p <- p + theme_bw()
+p
+```
+
+
+##
+```{r, echo = FALSE}
+numericke <- spotify_data %>% select_if(is.numeric)
+gr <- colorRampPalette(c("black", "white", "#1DB954"))
+corPlot(numericke, gr = gr, main = "")
+```
+
+##
+```{r, echo = FALSE}
+gr2 <- colorRampPalette(c("black", "white", "#1DB954"))
+corPlot(numericke[, 5:12], gr = gr2, main = "", upper = FALSE)
+```
+
+
+## SPOTIFY/APPLE/DEEZER PLAYLISTS
+```{r, include = FALSE}
+# Spotify
+p11 <- ggplot(spotify_data, aes(x = in_spotify_playlists))
+p11 <- p11 + geom_histogram(binwidth = 1000, fill = "#1DB954", color = "#008222", alpha = 1000)
+p11 <- p11 + xlab("Spotify playlists")
+p11 <- p11 + ylab("Number of songs")
+p11 <- p11 + theme(plot.title = element_text(size = 15))
+p11 <- p11 + theme_bw()
+p11
+
+# Apple
+p33 <- ggplot(spotify_data, aes(x = in_apple_playlists))
+p33 <- p33 + geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000)
+p33 <- p33 + xlab("Apple Music playlists")
+p33 <- p33 + ylab("Number of songs")
+p33 <- p33 + theme(plot.title = element_text(size = 15))
+p33 <- p33 + theme_bw()
+p33
+
+# Deezer
+p22 <- ggplot(spotify_data, aes(x = in_deezer_playlists))
+p22 <- p22 + geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000)
+p22 <- p22 + xlab("Deezer playlists")
+p22 <- p22 + ylab("Number of songs")
+p22 <- p22 + theme(plot.title = element_text(size = 15))
+p22 <- p22 + theme_bw()
+p22
+```
 
 ```{r, echo = FALSE}
-Ixos <- rnorm(4000, 120, 30)
-Primadur <- rnorm(4000, 200, 30)
-
-hist(Ixos, breaks = 30, xlim = c(0, 300), col = rgb(1, 0, 0, 0.5), xlab = "height",
-     ylab = "nbr of plants", main = "distribution of height")
-hist(Primadur, breaks = 30, xlim = c(0, 300), col = rgb(0, 0, 1, 0.5), add = T)
-legend("topright", legend = c("Ixos", "Primadur"), col = c(rgb(1, 0, 0, 0.5),
-                                                           rgb(0, 0, 1, 0.5)), pt.cex = 2, pch = 15)
+p <- plot_grid(p11, p22, p33,
+               ncol = 3, nrow = 1)
+p
 ```
+
+
+
+
+
+
+
+
+
+
 
 # Second section
 
@@ -35,7 +132,6 @@ legend("topright", legend = c("Ixos", "Primadur"), col = c(rgb(1, 0, 0, 0.5),
 
 Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
 Click the **Knit and Open Document** to build and preview an output.
-
 
 
 
