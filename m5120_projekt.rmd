@@ -35,3 +35,68 @@ legend("topright", legend = c("Ixos", "Primadur"), col = c(rgb(1, 0, 0, 0.5),
 
 Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
 Click the **Knit and Open Document** to build and preview an output.
+
+
+
+
+
+
+################################################### LUCČIN FINÁLNÍ KÓD ############################################################### 
+
+#### Dáta + summary + exploratívka ####
+
+
+
+
+#### Modely do projektu #### 
+
+model3a <- lm(streams ~ in_spotify_charts*in_apple_charts + in_apple_charts* in_deezer_charts + in_spotify_charts *in_deezer_charts + in_spotify_charts* in_deezer_charts*in_apple_charts, data = spotify_2023_finalni_uprava )
+summary(model3a) # 0.1325
+AIC(model3a) #34954.95
+BIC(model3a) #34997.43 
+
+model3b <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists, data = spotify_2023_finalni_uprava )
+summary(model3b) #0.6513
+AIC(model3b) # 34201.31
+BIC(model3b) # 34253.23
+
+model6 <- lm(streams ~ in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists, data = spotify_2023_finalni_uprava )
+summary(model6) #0.6776#
+AIC(model6) #34134.38
+BIC(model6) #34176.86
+shapiro.test(sample(rstandard(model6), size=50)) #0.001118 
+
+
+model8 <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists + in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists,  data = spotify_2023_finalni_uprava )
+summary(model8) #0.6921#
+anova(model8)
+AIC(model8) #34102.16
+BIC(model8) #34172.96
+shapiro.test(sample(rstandard(model8), size=50)) #0.001466 
+
+
+
+model9 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_2023_finalni_uprava)
+summary(model9)#0.6922#
+anova(model9)
+AIC(model9)#34100.04
+BIC(model9)#34161.4
+shapiro.test(sample(rstandard(model9), size=50)) #0.0006929 
+
+
+model11 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_2023_finalni_uprava)
+summary(model11)#0.6922
+anova(model11)
+AIC(model11)#34097.86
+BIC(model11)#34149.11
+shapiro.test(sample(rstandard(model11), size=50)) #3.079e-05
+
+#### Diagnostika modelu 11 ####
+plot(model11)
+
+#### Upravené modely cez diagnostiky ####
+
+#### Predikčné a confidenčné intervaly modeluxx ####
+
+
+#### Nejaká hypotéza #### 
