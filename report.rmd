@@ -3,10 +3,12 @@ title: "Spotify Data"
 author: Lucia Kajanová, Lukáš Poledňa, Tereza Slaninová, Kateřina Válková
 date: 12. 12. 2023
 output:
-    rmdformats::downcute:
+   rmdformats::downcute:
     code_folding: show
 ---
-```{r setup, include=FALSE}
+
+```{r setup, include = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(MASS)
 library(dplyr)
@@ -30,7 +32,6 @@ library(tidyr)
 
 
 
-
 ## Description of variables
 
 * PLAYLISTS – appearance of songs in different platforms’ playlists
@@ -41,126 +42,115 @@ library(tidyr)
 * OTHERS – danceability, acousticness, liveness, ...
 
 
-## SUMMARY
+##
 ```{r, include = FALSE}
-spotify_data <- read_xlsx("spotify.2023_finalni_uprava.xlsx")
+spotify_data <- read_xlsx("spotify_2023_data.xlsx")
 ```
+
+## Summary
 ```{r}
-summary(spotify_data[,1:8])
-```
-##
-```{r}
-summary(spotify_data[,9:16])
+summary(spotify_data)
 ```
 
 ##
 ```{r}
-summary(spotify_data[,17:24])
-```
-
-##
-```{r, echo = FALSE}
-p <- ggplot(spotify_data, aes(x = streams))
-p <- p + geom_histogram(binwidth = 100000000, fill = "#1DB954", color = "#008222", alpha = 1000)
-p <- p + xlab("Streams")
-p <- p + ylab("Number of songs")
-p <- p + theme(plot.title = element_text(size = 15))
-p <- p + theme_bw()
-p
+p <- ggplot(spotify_data, aes(x = streams)) +
+        geom_histogram(binwidth = 100000000, fill = "#1DB954", color = "#008222", alpha = 1000) +
+        xlab("Streams") +
+        ylab("Number of songs") +
+        theme(plot.title = element_text(size = 15)) +
+        theme_bw()
+print(p)
 ```
 
 
-##
-```{r, echo = FALSE}
-numericke <- spotify_data %>% select_if(is.numeric)
+## Correlation matrix
+```{r}
+numeric <- spotify_data %>% select_if(is.numeric)
 gr <- colorRampPalette(c("black", "white", "#1DB954"))
-corPlot(numericke, gr = gr, main = "")
+corPlot(numeric, gr = gr, main = "")
 ```
 
 ##
-```{r, echo = FALSE}
+```{r}
 gr2 <- colorRampPalette(c("black", "white", "#1DB954"))
-corPlot(numericke[, 5:12], gr = gr2, main = "", upper = FALSE)
+corPlot(numeric[, 5:12], gr = gr2, main = "", upper = FALSE)
 ```
 
-##
-```{r, echo = FALSE}
+## CO TO JE
+```{r}
 pairs(spotify_data[, c(7, 8, 9, 10, 11, 12, 13, 14)], col="#1DB954", pch=19)
 ```
 
 ## SPOTIFY/APPLE/DEEZER PLAYLISTS
-```{r, include = FALSE}
+```{r}
 # Spotify
-p11 <- ggplot(spotify_data, aes(x = in_spotify_playlists))
-p11 <- p11 + geom_histogram(binwidth = 1000, fill = "#1DB954", color = "#008222", alpha = 1000)
-p11 <- p11 + xlab("Spotify playlists")
-p11 <- p11 + ylab("Number of songs")
-p11 <- p11 + theme(plot.title = element_text(size = 15))
-p11 <- p11 + theme_bw()
-p11
+p11 <- ggplot(spotify_data, aes(x = in_spotify_playlists)) +
+  geom_histogram(binwidth = 1000, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlab("Spotify playlists") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
+
 
 # Apple
-p33 <- ggplot(spotify_data, aes(x = in_apple_playlists))
-p33 <- p33 + geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000)
-p33 <- p33 + xlab("Apple Music playlists")
-p33 <- p33 + ylab("Number of songs")
-p33 <- p33 + theme(plot.title = element_text(size = 15))
-p33 <- p33 + theme_bw()
-p33
+p33 <- ggplot(spotify_data, aes(x = in_apple_playlists)) +
+  geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlab("Apple Music playlists") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
+
 
 # Deezer
-p22 <- ggplot(spotify_data, aes(x = in_deezer_playlists))
-p22 <- p22 + geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000)
-p22 <- p22 + xlab("Deezer playlists")
-p22 <- p22 + ylab("Number of songs")
-p22 <- p22 + theme(plot.title = element_text(size = 15))
-p22 <- p22 + theme_bw()
-p22
-```
+p22 <- ggplot(spotify_data, aes(x = in_deezer_playlists)) +
+  geom_histogram(binwidth = 20, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlab("Deezer playlists") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
 
-```{r, echo = FALSE}
 p <- plot_grid(p11, p22, p33,
                ncol = 3, nrow = 1)
-p
+print(p)
 ```
+
 
 ## SPOTIFY/APPLE/DEEZER CHARTS
-```{r, include = FALSE, results = FALSE, warning = FALSE}
+```{r, results = "hide", warning = FALSE}
 # Spotify
-p4 <- ggplot(spotify_data, aes(x = in_spotify_charts))
-p4 <- p4 + geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000)
-p4 <- p4 + xlim(1, 150)
-p4 <- p4 + xlab("Spotify charts - only ranked")
-p4 <- p4 + ylab("Number of songs")
-p4 <- p4 + theme(plot.title = element_text(size = 15))
-p4 <- p4 + theme_bw()
-p4
+p4 <- ggplot(spotify_data, aes(x = in_spotify_charts)) +
+  geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlim(1, 150) +
+  xlab("Spotify charts - only ranked") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
+
 
 # Apple
-p6 <- ggplot(spotify_data, aes(x = in_apple_charts))
-p6 <- p6 + geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000)
-p6 <- p6 + xlim(1, 290)
-p6 <- p6 + xlab("Apple Music charts - only ranked")
-p6 <- p6 + ylab("Number of songs")
-p6 <- p6 + theme(plot.title = element_text(size = 15))
-p6 <- p6 + theme_bw()
-p6
+p6 <- ggplot(spotify_data, aes(x = in_apple_charts)) +
+  geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlim(1, 290) +
+  xlab("Apple Music charts - only ranked") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
+
 
 # Deezer
-p5 <- ggplot(spotify_data, aes(x = in_deezer_charts))
-p5 <- p5 + geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000)
-p5 <- p5 + xlim(1, 50)
-p5 <- p5 + ylim(0, 100)
-p5 <- p5 + xlab("Deezer charts - only ranked")
-p5 <- p5 + ylab("Number of songs")
-p5 <- p5 + theme(plot.title = element_text(size = 15))
-p5 <- p5 + theme_bw()
-p5
-```
-```{r, echo = FALSE, results = FALSE, warning = FALSE}
+p5 <- ggplot(spotify_data, aes(x = in_deezer_charts)) +
+  geom_histogram(binwidth = 10, fill = "#1DB954", color = "#008222", alpha = 1000) +
+  xlim(1, 50) +
+  ylim(0, 100) +
+  xlab("Deezer charts - only ranked") +
+  ylab("Number of songs") +
+  theme(plot.title = element_text(size = 15)) +
+  theme_bw()
+
 p <- plot_grid(p4, p6, p5,
                ncol = 3, nrow = 1)
-p
+print(p)
 ```
 
 ## ARTISTS

@@ -41,8 +41,7 @@ library(tidyr)
 
 ## SUMMARY
 ```{r, include = FALSE}
-spotify.2023_finalni_uprava <- read_excel("C:/Users/poled/OneDrive - MUNI/5. semestr/M5120/projekt/5120_projekt/spotify.2023_finalni_uprava.xlsx")
-spotify_data <- spotify.2023_finalni_uprava
+spotify_data <- read_excel("spotify_2023_data.xlsx")
 ```
 ```{r}
 summary(spotify_data[,1:8])
