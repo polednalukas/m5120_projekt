@@ -257,7 +257,7 @@ shapiro.test(sample(rstandard(model11), size=50)) #3.079e-05
 
 #### Diagnostika modelu 9 ####
 plot(model9)
-
+ssss
 #### Upravené modely cez diagnostiky ####
 
 #### Predikčné a confidenčné intervaly modeluxx ####
