@@ -23,7 +23,7 @@ library(tidyr)
 
 # Introduction
 
-## DATA
+## Data
 * Most Streamed Spotify Songs 2023
 * Kaggle — Nidula Elgiriyewithana
 * numeric variable  — streams
@@ -31,7 +31,7 @@ library(tidyr)
 
 
 
-## DESCRIPTION OF VARIABLES
+## Description of variables
 
 * PLAYLISTS – appearance of songs in different platforms’ playlists
 * CHARTS – appearance of songs in different platforms’ charts
@@ -475,4 +475,4 @@ lines(xx2, yy2[, 1]-sqrt(var.bands), col="#008222", lwd=2, lty=2)
 ```
 
 
-# Thank you for your \ attention
+# Thank you for your attention
