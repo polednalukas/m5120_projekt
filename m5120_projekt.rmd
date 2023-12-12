@@ -16,6 +16,7 @@ library(readxl)
 library(cowplot)
 library(vctrs)
 library(psych)
+library(tidyr)
 ```
 
 # Introduction
@@ -40,7 +41,7 @@ library(psych)
 
 ## SUMMARY
 ```{r, include = FALSE}
-spotify.2023_finalni_uprava <- read_excel("D:/OneDrive - MUNI/5. semestr/M5120/projekt/5120_projekt/spotify.2023_finalni_uprava.xlsx")
+spotify.2023_finalni_uprava <- read_excel("C:/Users/poled/OneDrive - MUNI/5. semestr/M5120/projekt/5120_projekt/spotify.2023_finalni_uprava.xlsx")
 spotify_data <- spotify.2023_finalni_uprava
 ```
 ```{r}
@@ -196,71 +197,281 @@ p
 
 
 
-# 
+# Model selection
 
-## Third slide
+## MODELS
+* Model 3A: $Streams_i = \beta_0 (Sch \times Ach)_i + \beta_1 (Ach \times Dch)_i \\ + \beta_2 (Sch \times Dch)_i + \beta_3 (Sch \times Dch \times Ach)_i$
+* Model 3B: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\+ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i \\+ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i + \epsilon_i$
 
-Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
-Click the **Knit and Open Document** to build and preview an output.
+##
+* Model 6: $Streams_i = \beta_0 + \beta_1 \times Sp + \beta_2 \times Ap + \beta_3 \times Dp \\+ \beta_4 \times (Sp \times Ap)_i + \beta_5 \times (Ap \times Dp)_i + \beta_6 \times (Sp \times Dp)_i \\+ \beta_7 \times (Sp \times Dp \times Ap)_i + \epsilon_i$
+* Model 8: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\+ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i + \\ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i +\\ \beta_{10} \times (Sp \times Ap)_i + \beta_{11} \times (Ap \times Dp)_i \\+ \beta_{12} \times (Sp \times Dp)_i + \beta_{13} \times (Sp \times Dp \times Ap)_i + \epsilon_i$
 
+##
+* Model 9: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach \\ + \beta_3 \times Sp + \beta_4 \times Ap + \beta_5 \times Dp  \\ + \beta_6 \times (Sp \times Dp)_i + \beta_7 \times (Sp \times Ap)_i + \\ \beta_8 \times (Dp \times Ap)_i +
+ \beta_9 \times (Ap \times Ach)_i + \beta_{10} \times (Sp \times Sch)_i + \\ \beta_{11} \times (Sp \times Dp \times Ap)_i+ \epsilon_i$
+* Model 11: $Streams_i = \beta_0 + \beta_1 \times Sch   + \beta_2 \times Sp + \beta_3 \times Ap + \\ \beta_4 \times Dp + \beta_5 \times (Sp \times Dp)_i + \\ \beta_6 \times (Sp \times Ap)_i +  \beta_7 \times (Dp \times Ap)_i \\+
+\beta_8 \times (Sp \times Sch)_i +  \beta_9 \times (Sp \times Dp \times Ap)_i + \epsilon_i$
 
-
-
-
-################################################### LUCČIN FINÁLNÍ KÓD ##############################################################
-
-
-
-
-#### Modely do projektu #### 
-
-model3a <- lm(streams ~ in_spotify_charts*in_apple_charts + in_apple_charts* in_deezer_charts + in_spotify_charts *in_deezer_charts + in_spotify_charts* in_deezer_charts*in_apple_charts, data = spotify_data )
+##
+```{r, include = FALSE, results = FALSE}
+# Model 3A
+model3a <- lm(streams ~ in_spotify_charts * in_apple_charts + in_apple_charts* in_deezer_charts + in_spotify_charts *in_deezer_charts + in_spotify_charts* in_deezer_charts * in_apple_charts, data = spotify_data )
 summary(model3a) # 0.1325
 AIC(model3a) #34954.95
-BIC(model3a) #34997.43 
+BIC(model3a) #34997.43
 
+# Model 3B
 model3b <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists, data = spotify_data)
 summary(model3b) #0.6513
 AIC(model3b) # 34201.31
 BIC(model3b) # 34253.23
 
+# Model 6
 model6 <- lm(streams ~ in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists, data = spotify_data )
-summary(model6) #0.6776#
-AIC(model6) #34134.38
-BIC(model6) #34176.86
-shapiro.test(sample(rstandard(model6), size=50)) #0.001118 
+summary(model6) # 0.6776
+AIC(model6) # 34134.38
+BIC(model6) # 34176.86
 
-
-model8 <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists + in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists,  data = spotify_data )
-summary(model8) #0.6921#
+# Model 8
+model8 <- lm(streams ~ in_spotify_playlists*in_spotify_charts + in_apple_playlists* in_apple_charts + in_deezer_charts *in_deezer_playlists + in_spotify_playlists*in_apple_playlists + in_apple_playlists* in_deezer_playlists + in_spotify_playlists *in_deezer_playlists + in_spotify_playlists* in_deezer_playlists*in_apple_playlists, data = spotify_data)
+summary(model8) # 0.6921
 anova(model8)
-AIC(model8) #34102.16
-BIC(model8) #34172.96
-shapiro.test(sample(rstandard(model8), size=50)) #0.001466 
+AIC(model8) # 34102.16
+BIC(model8) # 34172.96
 
-
-
+# Model 9
 model9 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data)
-summary(model9)#0.6922#
+summary(model9)# 0.6922
 anova(model9)
-AIC(model9)#34100.04
-BIC(model9)#34161.4
-shapiro.test(sample(rstandard(model9), size=50)) #0.0006929 
+AIC(model9) # 34100.04
+BIC(model9) # 34161.4
 
-
+# Model 11
 model11 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data)
-summary(model11)#0.6922
+summary(model11) # 0.6922
 anova(model11)
-AIC(model11)#34097.86
-BIC(model11)#34149.11
-shapiro.test(sample(rstandard(model11), size=50)) #3.079e-05
+AIC(model11) # 34097.86
+BIC(model11) # 34149.11
 
-#### Diagnostika modelu 9 ####
-plot(model9)
-ssss
-#### Upravené modely cez diagnostiky ####
+data <- data.frame(matrix(
+  c(0.1325, 0.6513, 0.6776, 0.6921, 0.6922, 0.6922, AIC(model3a), AIC(model3b), AIC(model6), AIC(model8),
+             AIC(model9), AIC(model11), BIC(model3a), BIC(model3b), BIC(model6), BIC(model8), BIC(model9), BIC(model11)),
+  ncol = 6,
+  nrow = 3,
+  byrow = TRUE
+)
+)
+rownames(data) <- c("Adjusted R squared", "AIC", "BIC")
+colnames(data) <- c("Model 3A", "Model 3B", "Model 6", "Model 8", "Model 9", "Model 11")
+```
+```{r, echo = FALSE}
+print(data)
+```
 
-#### Predikčné a confidenčné intervaly modeluxx ####
+## MODEL 9
+```{r, echo = FALSE}
+#Model 9
+plot(studres(model9)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="#1DB954", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=817), col="#008222")
+abline(h = -qt(1-0.05/(2 * 829), df=817), col="#008222")
+indices <- c(527, 528, 42, 37, 136, 721)
+abline(v=indices, lty=2)
+points(indices, studres(model9)[indices], pch = 16, col = 'red')
+
+```
 
 
-#### Nejaká hypotéza #### 
+## MODEL 11
+```{r, echo = FALSE}
+# Model 11
+plot(studres(model11)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="#1DB954", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=819), col="#008222")
+abline(h = -qt(1-0.05/(2 * 829), df=819), col="#008222")
+
+indices <- c(527, 528, 42, 37, 136, 721)
+
+abline(v=indices, lty=2)
+points(indices, studres(model11)[indices], pch = 16, col = 'red')
+```
+
+##
+```{r, include = FALSE, results = FALSE}
+# Model 9
+spotify_data_bez_hodnot_model9 <- spotify_data[c(-527, -42, -528, -721),]
+model9_1 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot_model9)
+summary(model9_1) # 0.7233
+anova(model9_1)
+AIC(model9_1) # 33806.12
+BIC(model9_1) # 33867.42
+
+
+# Model 11
+spotify_data_bez_hodnot_model11 <- spotify_data[c(-527, -42, -528, -721),]
+model11_1 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot_model11)
+summary(model11_1) # 0.7221
+anova(model11_1)
+AIC(model11_1) # 33807.87
+BIC(model11_1) # 33859.74
+
+data_2 <- data.frame(matrix(
+  c(0.7233, 0.7221, AIC(model9_1), AIC(model11_1), BIC(model9_1), BIC(model11_1)),
+  ncol = 2,
+  nrow = 3,
+  byrow = TRUE
+)
+)
+rownames(data_2) <- c("Adjusted R squared", "AIC", "BIC")
+colnames(data_2) <- c("Model 9_1", "Model 11_1")
+```
+```{r, echo = FALSE}
+print(data_2)
+```
+
+
+# Model 9
+
+##
+```{r, echo = FALSE}
+par(mfrow = c(2, 3))
+plot(model9, which = 1:6)
+```
+
+##
+```{r, echo = FALSE}
+plot(studres(model9)~c(1:829),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="#1DB954", lwd=2)
+abline(h = qt(1-0.05/(2 * 829), df=817), col="#008222")
+abline(h = -qt(1-0.05/(2 * 829), df=817), col="#008222")
+
+indices <- c(527, 528, 42, 37, 136, 721)
+
+abline(v=indices, lty=2)
+points(indices, studres(model9)[indices], pch = 16, col = 'red')
+```
+
+## MODEL 9_1
+```{r, include = FALSE}
+spotify_data_bez_hodnot_model9 <- spotify_data[c(-527, -42, -528, -721),]
+model9_1 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot_model9)
+```
+```{r, echo = FALSE}
+plot(studres(model9_1)~c(1:825),
+     ylab="Jackknife residuals", xlab="Index", main="Jackknife residuals")
+abline(h=0, col="#1DB954", lwd=2)
+abline(h = qt(1-0.05/(2 * 825), df=813), col="#008222")
+abline(h = -qt(1-0.05/(2 * 825), df=813), col="#008222")
+indices <- c(125, 107, 145, 38, 37)
+
+abline(v=indices, lty=2)
+points(indices, studres(model9_1)[indices], pch = 16, col = "red")
+```
+
+## MODELS 9, 9_1, 9_2
+```{r, include = FALSE}
+spotify_data_bez_hodnot2_model9 <- spotify_data_bez_hodnot_model9[c(-125, -145),]
+model9_2 <- lm(streams ~ in_spotify_playlists* in_deezer_playlists*in_apple_playlists + in_spotify_playlists *in_deezer_playlists+ in_apple_playlists* in_apple_charts + in_spotify_playlists*in_spotify_charts + in_apple_playlists +in_spotify_playlists+in_spotify_charts,  data = spotify_data_bez_hodnot2_model9)
+```
+```{r, echo = FALSE}
+data_3 <- data.frame(matrix(
+  c(0.6922, 0.7233, 0.7324, AIC(model9), AIC(model9_1), AIC(model9_2), BIC(model9), BIC(model9_1), BIC(model9_2), 0.2956, 0.001073, 0.0004947),
+  ncol = 3,
+  nrow = 4,
+  byrow = TRUE
+)
+)
+rownames(data_3) <- c("Adjusted R squared", "AIC", "BIC", "Shapiro Test")
+colnames(data_3) <- c("Model 9", "Model 9_1", "Model 9_2")
+print(data_3)
+```
+
+##
+```{r, echo = FALSE}
+par(mfrow = c(2, 3))
+plot(model9_2, which = 1:6)
+```
+
+# Prediction intervals
+
+## MODEL 1
+```{r, echo = FALSE}
+model1 <- lm(formula = streams ~ in_spotify_playlists, data = spotify_data)
+
+plot(spotify_data$streams ~ spotify_data$in_spotify_playlists, xlab = "Spotify Playlists", ylab = "Streams")
+xx <- seq(min(spotify_data$in_spotify_playlists), max(spotify_data$in_spotify_playlists), length=501)
+novadata1 <- data.frame(in_spotify_playlists = xx)
+yy1 <- predict(model1, newdata = novadata1, interval = "prediction")
+
+lines(xx, yy1[, 1], col="#1DB954", lwd=2)
+lines(xx, yy1[, 2], col="#008222", lwd=2, lty=3)
+lines(xx, yy1[, 3], col="#008222", lwd=2, lty=3)
+```
+
+## MODEL 2
+```{r, echo = FALSE}
+model2 <- lm(formula = streams ~ in_apple_playlists, data = spotify_data)
+
+plot(spotify_data$streams ~ spotify_data$in_apple_playlists, xlab = "Apple Playlists", ylab = "Streams")
+xx2 <- seq(min(spotify_data$in_apple_playlists), max(spotify_data$in_apple_playlists), length=501)
+novadata2 <- data.frame(in_apple_playlists = xx2)
+
+yy2 <- predict(model2, newdata = novadata2, interval = "prediction")
+
+lines(xx2, yy2[, 1], col="#1DB954", lwd=2)
+lines(xx2, yy2[, 2], col="#008222", lwd=2, lty=3)
+lines(xx2, yy2[, 3], col="#008222", lwd=2, lty=3)
+```
+
+# Confidence intervals
+
+## MODEL 1
+```{r, echo = FALSE}
+model1 <- lm(formula = streams ~ in_spotify_playlists, data = spotify_data)
+
+plot(spotify_data$streams ~ spotify_data$in_spotify_playlists, xlab = "Spotify Playlists", ylab = "Streams")
+xx <- seq(min(spotify_data$in_spotify_playlists), max(spotify_data$in_spotify_playlists), length=501)
+novadata1 <- data.frame(in_spotify_playlists = xx)
+yy <- predict(model1, newdata = novadata1, interval = "confidence")
+
+lines(xx, yy[, 1], col="#1DB954", lwd=2)
+
+lines(xx,
+      yy[, 1] - (yy[, 3] - yy[, 1])*sqrt(2*qf(0.95, df1=2, df2=827))/qt(0.975, df=827),
+      col="#008222", lwd=2, lty=2)
+lines(xx,
+      yy[, 1] + (yy[, 3] - yy[, 1])*sqrt(2*qf(0.95, df1=2, df2=827))/qt(0.975, df=827),
+      col="#008222", lwd=2, lty=2)
+var.bands <- diag(2*qf(0.95, df1=2, df2=827)*cbind(1, xx)%*%vcov(model1)%*%rbind(1, xx))
+lines(xx, yy[, 1]+sqrt(var.bands), col="#008222", lwd=2, lty=2)
+lines(xx, yy[, 1]-sqrt(var.bands), col="#008222", lwd=2, lty=2)
+```
+
+## MODEL 2
+```{r, echo = FALSE}
+model2 <- lm(formula = streams ~ in_apple_playlists, data = spotify_data)
+
+plot(spotify_data$streams ~ spotify_data$in_apple_playlists, xlab = "Apple Playlists", ylab = "Streams")
+xx2 <- seq(min(spotify_data$in_apple_playlists), max(spotify_data$in_apple_playlists), length=501)
+novadata2 <- data.frame(in_apple_playlists = xx2)
+yy2 <- predict(model2, newdata = novadata2, interval = "confidence")
+
+lines(xx2, yy2[, 1], col="#1DB954", lwd=2)
+
+lines(xx2,
+      yy2[, 1] - (yy2[, 3] - yy2[, 1])*sqrt(2*qf(0.95, df1=2, df2=827))/qt(0.975, df=827),
+      col="#008222", lwd=2, lty=2)
+lines(xx2,
+      yy2[, 1] + (yy2[, 3] - yy2[, 1])*sqrt(2*qf(0.95, df1=2, df2=827))/qt(0.975, df=827),
+      col="#008222", lwd=2, lty=2)
+var.bands <- diag(2*qf(0.95, df1=2, df2=827)*cbind(1, xx2)%*%vcov(model2)%*%rbind(1, xx2))
+lines(xx2, yy2[, 1]+sqrt(var.bands), col="#008222", lwd=2, lty=2)
+lines(xx2, yy2[, 1]-sqrt(var.bands), col="#008222", lwd=2, lty=2)
+```
+
+
+# Thank you for your \ attention
