@@ -191,7 +191,9 @@ p
 # Model selection
 
 ## MODELS
-* Model 3A: $Streams_i = \beta_0 (Sch \times Ach)_i + \beta_1 (Ach \times Dch)_i \\ + \beta_2 (Sch \times Dch)_i + \beta_3 (Sch \times Dch \times Ach)_i$
+* Model 3A: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\
++ \beta_4 \times (Sch \times Ach)_i + \beta_5 \times (Ach \times Dch)_i + \beta_6 \times (Sch \times Dch)_i
+ + \beta_7 \times (Sch \times Dch \times Ach)_i + \epsilon_i$
 * Model 3B: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\+ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i \\+ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i + \epsilon_i$
 
 ##

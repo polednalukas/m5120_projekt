@@ -199,17 +199,16 @@ p
 # Model selection
 
 ## MODELS
-* Model 3A: $Streams_i = \beta_0 (Sch \times Ach)_i + \beta_1 (Ach \times Dch)_i \\ + \beta_2 (Sch \times Dch)_i + \beta_3 (Sch \times Dch \times Ach)_i$
-* Model 3B: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\+ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i \\+ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i + \epsilon_i$
+* Model 3A: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch  + \\ \beta_4 \times (Sch \times Ach)_i + \beta_5 \times (Ach \times Dch)_i  + \\ \beta_6 \times (Sch \times Dch)_i + \beta_7 \times (Sch \times Dch \times Ach)_i + \epsilon_i$
+* Model 3B: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch + \\ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i + \\ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i + \epsilon_i$
 
 ##
-* Model 6: $Streams_i = \beta_0 + \beta_1 \times Sp + \beta_2 \times Ap + \beta_3 \times Dp \\+ \beta_4 \times (Sp \times Ap)_i + \beta_5 \times (Ap \times Dp)_i + \beta_6 \times (Sp \times Dp)_i \\+ \beta_7 \times (Sp \times Dp \times Ap)_i + \epsilon_i$
-* Model 8: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch \\+ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i + \\ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i +\\ \beta_{10} \times (Sp \times Ap)_i + \beta_{11} \times (Ap \times Dp)_i \\+ \beta_{12} \times (Sp \times Dp)_i + \beta_{13} \times (Sp \times Dp \times Ap)_i + \epsilon_i$
+* Model 6: $Streams_i = \beta_0 + \beta_1 \times Sp + \beta_2 \times Ap + \beta_3 \times Dp + \\ \beta_4 \times (Sp \times Ap)_i + \beta_5 \times (Ap \times Dp)_i + \\ \beta_6 \times (Sp \times Dp)_i +  \beta_7 \times (Sp \times Dp \times Ap)_i + \epsilon_i$
+* Model 8: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach + \beta_3 \times Dch + \\ \beta_4 \times Sp + \beta_5 \times Ap + \beta_6 \times Dp + \beta_7 \times (Sp \times Sch)_i + \\ \beta_8 \times (Ap \times Ach)_i + \beta_9 \times (Dch \times Dp)_i +\\ \beta_{10} \times (Sp \times Ap)_i + \beta_{11} \times (Ap \times Dp)_i + \\ \beta_{12} \times (Sp \times Dp)_i + \beta_{13} \times (Sp \times Dp \times Ap)_i + \epsilon_i$
 
 ##
-* Model 9: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach \\ + \beta_3 \times Sp + \beta_4 \times Ap + \beta_5 \times Dp  \\ + \beta_6 \times (Sp \times Dp)_i + \beta_7 \times (Sp \times Ap)_i + \\ \beta_8 \times (Dp \times Ap)_i +
- \beta_9 \times (Ap \times Ach)_i + \beta_{10} \times (Sp \times Sch)_i + \\ \beta_{11} \times (Sp \times Dp \times Ap)_i+ \epsilon_i$
-* Model 11: $Streams_i = \beta_0 + \beta_1 \times Sch   + \beta_2 \times Sp + \beta_3 \times Ap + \\ \beta_4 \times Dp + \beta_5 \times (Sp \times Dp)_i + \\ \beta_6 \times (Sp \times Ap)_i +  \beta_7 \times (Dp \times Ap)_i \\+
+* Model 9: $Streams_i = \beta_0 + \beta_1 \times Sch + \beta_2 \times Ach  + \\ \beta_3 \times Sp + \beta_4 \times Ap + \beta_5 \times Dp   + \\ \beta_6 \times (Sp \times Dp)_i + \beta_7 \times (Sp \times Ap)_i + \\ \beta_8 \times (Dp \times Ap)_i + \beta_9 \times (Ap \times Ach)_i + \\ \beta_{10} \times (Sp \times Sch)_i + \beta_{11} \times (Sp \times Dp \times Ap)_i+ \epsilon_i$
+* Model 11: $Streams_i = \beta_0 + \beta_1 \times Sch   + \beta_2 \times Sp + \beta_3 \times Ap + \\ \beta_4 \times Dp + \beta_5 \times (Sp \times Dp)_i + \\ \beta_6 \times (Sp \times Ap)_i +  \beta_7 \times (Dp \times Ap)_i + \\
 \beta_8 \times (Sp \times Sch)_i +  \beta_9 \times (Sp \times Dp \times Ap)_i + \epsilon_i$
 
 ##
