@@ -5,6 +5,6 @@ Spotify_2023_data.xslx jsou data, která jsme použili na vypracování tohoto p
 
 Soubory presentation.html a presentation.rmd jsou využity na prezentaci projektu.
 
-Soubory report.html a report.rmd jsou využity na report projektu.
+Soubory report.html a report.rmd jsou využity na report projektu. [TODO]
 
 Soubor main.R byl využit na pomoc při zpracování ostatních souborů.
